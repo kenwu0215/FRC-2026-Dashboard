@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import "./App.css";
 import Gyro from "./components/Gyro";
 
+
 function App() {
  
     return (
-      <div>        
-        <Gyro angle={0} size={300}/>
+      <div className="grid grid-cols-3 w-screen h-screen bg-gray-700 p-15">        
+        <Gyro angle={-110}/>
       </div>
 
     );

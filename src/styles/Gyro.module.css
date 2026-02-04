@@ -1,51 +1,134 @@
+:root {
+  /* 定義更精緻的配色 */
+  --bg-color: #f0f2f5;
+  --accent-pink: #FF60AF;
+  --glow-pink: rgba(255, 96, 175, 0.4);
+  --needle-gradient: linear-gradient(180deg, #e07ceb 0%, #b06ab3 100%);
+}
+
 .compass {
-    width: var(--size, 500px);
-    height: var(--size, 500px);
-
-    border-radius: 50%;
-
-    background: #ebebeb;
-
-    position: relative;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: var(--size, 500px);
+  height: var(--size, 500px);
+  border-radius: 50%;
+  background: var(--bg-color);
+  
+  /* 強化 1: 使用多層陰影製造「懸浮盤面」立體感 */
+  box-shadow: 
+    15px 15px 30px #d1d9e6, 
+    -15px -15px 30px #ffffff,
+    inset 0 0 0 5px rgba(255, 255, 255, 0.8);
+    
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  isolation: isolate;
+  transition: all 0.3s ease;
 }
 
-.triangle_arrow {
-	width: 0;
-	height: 0;
-	border-left: 12px solid transparent;
-	border-bottom: 50px solid #e07ceb;
-	border-right: 12px solid transparent;
-
-    position: absolute;
-    transform: rotate(var(--angle, 0deg));
-
-    /* top: calc(50% - 25px);
-    left: calc(50% - 25px); */
-
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* 強化 2: 底層動態光暈，讓背景有呼吸感 */
+.compass::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent-pink),pink, #FFC1E0, white, #FFC1E0,pink, var(--accent-pink));
+  filter: blur(15px);
+  z-index: -1;
+  opacity: 0.5;
+  animation: pulseGlow 4s ease-in-out infinite;
 }
 
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.02); }
+}
 
+/* 強化 3: 內部錶盤凹陷視覺 */
+.compass::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: var(--bg-color);
+  box-shadow: 
+    inset 8px 8px 16px #d1d9e6, 
+    inset -8px -8px 16px #ffffff;
+  z-index: 1;
+}
 
+/* 刻度優化：使用稍微細膩的灰色與粉色點綴 */
 .tick {
   position: absolute;
-  top: 0;
+  top: 15px; /* 稍微內縮避免太靠邊 */
   left: 50%;
-  width: 2px;
-  height: 10px; /* 刻度長度 */
-  background: #4b4b4b;
-  /* 關鍵：設定旋轉中心在圓盤中心，而不是刻度中心 */
-  /* 圓盤高 200px，所以中心在 100px 處 */
-  transform-origin: 0 var(--size); 
+  width: 1px;
+  height: 8px;
+  background: #a3b1c6;
+  
+  /* 關鍵修正：確保旋轉中心完美對齊 */
+  transform-origin: center calc(var(--size) / 2 - 15px); 
   transform: translateX(-50%) rotate(var(--tick_angle));
+  z-index: 2;
+  transition: background 0.3s ease;
 }
 
 .tickMajor {
   height: 15px;
-  background: #ff0000;
+  background: var(--accent-pink);
   width: 3px;
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--glow-pink);
+}
+
+/* 強化 4: 指針重塑（更像高級機械錶） */
+.triangle_arrow {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 70px solid #e07ceb; /* 拉長指針 */
+
+  position: absolute;
+  z-index: 10;
+  
+  /* 旋轉中心設定在底部 */
+  transform-origin: center bottom;
+  /* 定位到圓心 */
+  top: calc(50% - 70px);
+  left: calc(50% - 10px);
+
+  /* 增加更絲滑的旋轉過渡 */
+  transform: rotate(var(--angle, 0deg));
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* 讓指針帶有物理陰影 */
+  filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2));
+}
+
+/* 強化 5: 中心軸蓋裝飾 (利用偽元素) */
+.triangle_arrow::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 3px solid var(--accent-pink);
+  border-radius: 50%;
+  bottom: -78px; /* 修正位置以蓋住旋轉點 */
+  left: -8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+/* 隱藏原生背景，讓整體感更好 */
+.triangle_arrow::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-pink);
+  border-radius: 50%;
+  bottom: -72px;
+  left: -2px;
+  z-index: 11;
 }
