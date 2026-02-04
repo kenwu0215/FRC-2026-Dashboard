@@ -1,0 +1,28 @@
+body {
+    background-color: rgba(0, 0, 0, 0.799);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 0px;
+    margin: 0px;
+}
+
+.bloc {
+    background-color: rgb(0, 0, 0);
+    width: 100px;
+    height: 100px;
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bloc::after{
+    content: "";
+    background-color: antiquewhite;
+    height: 110px;
+    width: 110px;
+        
+}

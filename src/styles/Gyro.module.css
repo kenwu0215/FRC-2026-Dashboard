@@ -1,0 +1,51 @@
+.compass {
+    width: var(--size, 500px);
+    height: var(--size, 500px);
+
+    border-radius: 50%;
+
+    background: #ebebeb;
+
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.triangle_arrow {
+	width: 0;
+	height: 0;
+	border-left: 12px solid transparent;
+	border-bottom: 50px solid #e07ceb;
+	border-right: 12px solid transparent;
+
+    position: absolute;
+    transform: rotate(var(--angle, 0deg));
+
+    /* top: calc(50% - 25px);
+    left: calc(50% - 25px); */
+
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+
+.tick {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 10px; /* 刻度長度 */
+  background: #4b4b4b;
+  /* 關鍵：設定旋轉中心在圓盤中心，而不是刻度中心 */
+  /* 圓盤高 200px，所以中心在 100px 處 */
+  transform-origin: 0 var(--size); 
+  transform: translateX(-50%) rotate(var(--tick_angle));
+}
+
+.tickMajor {
+  height: 15px;
+  background: #ff0000;
+  width: 3px;
+}
